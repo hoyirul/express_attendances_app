@@ -9,7 +9,7 @@ module.exports = {
         primaryKey: true,
         allowNull: false,
       },
-      instutionId: {
+      institutionId: {
         type: Sequelize.BIGINT,
         allowNull: false,
         references: {

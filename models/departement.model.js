@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
       autoIncrement: true,
       allowNull: false,
     },
-    departement_name: {
+    departementName: {
       type: DataTypes.STRING,
       allowNull: false,
     },

@@ -10,7 +10,7 @@ module.exports = {
         autoIncrement: true,
         allowNull: false,
       },
-      departement_name: {
+      departementName: {
         type: Sequelize.STRING,
         allowNull: false,
       },
