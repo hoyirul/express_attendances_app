@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     }
   }, {
-    tableName: 'employeeStatus',
+    tableName: 'employee_status',
   });
 
   EmployeeStatus.hasMany(Employees);
