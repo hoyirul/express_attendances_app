@@ -1,9 +1,11 @@
 var express = require('express');
 var router = express.Router();
+const upload = require("../middlewares/document.middleware");
 var bankController = require('./../controllers/bank.controller');
 var employeestatusController = require('./../controllers/employeestatus.controller');
 var institutionController = require('./../controllers/institution.controller');
 var departementController = require('./../controllers/departement.controller');
+var documentController = require('./../controllers/document.controller');
 
 /* GET Banks */
 router.get('/banks', bankController.index);
@@ -32,5 +34,9 @@ router.get('/departements/:id', departementController.show);
 router.post('/departements/', departementController.store);
 router.put('/departements/:id', departementController.update);
 router.delete('/departements/:id', departementController.destroy);
+
+// Test upload image
+router.get("/documents", documentController.index);
+router.post("/documents", documentController.store);
 
 module.exports = router;
