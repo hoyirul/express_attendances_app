@@ -6,6 +6,11 @@ var employeestatusController = require('./../controllers/employeestatus.controll
 var institutionController = require('./../controllers/institution.controller');
 var departementController = require('./../controllers/departement.controller');
 var documentController = require('./../controllers/document.controller');
+var employeeController = require('./../controllers/employee.controller');
+
+/* GET Employee */
+router.get('/profile', employeeController.index);
+
 
 /* GET Banks */
 router.get('/banks', bankController.index);

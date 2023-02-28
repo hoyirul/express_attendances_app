@@ -24,6 +24,26 @@ module.exports = {
         blood: 'A',
         createdAt: new Date(),
         updatedAt: new Date()
+      },
+      {
+        nik: '10281',
+        institutionId: 1,
+        departementId: 1,
+        bankId: 1,
+        employeeStatusId: 3,
+        name: 'Ahmad Farrel Sirajudin Zaidan',
+        email: 'sample2@gmail.com',
+        password: bcrypt.hashSync('password'),
+        placeOfBirth: 'Lawang, Malang',
+        dateOfBirth: '2002-07-27',
+        gender: 'P',
+        dateIn: '2023-01-18',
+        longApprentice: 6,
+        existingEdu: 'D4 Teknik Informatika',
+        major: 'Teknologi Informasi',
+        blood: 'B',
+        createdAt: new Date(),
+        updatedAt: new Date()
       }
     ]);
   },
