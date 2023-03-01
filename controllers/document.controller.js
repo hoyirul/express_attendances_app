@@ -56,10 +56,10 @@ exports.store = async (req, res) => {
     await documentMiddleware(req, res);
     var path = "/public/documents/";
     const response = await documents.create({
-      nik: '10282',
-      idCardPhoto: path + `AIO-${Date.now()}.jpg`,
-      officialPhoto: path + `AIO-${Date.now()}.jpg`,
-      bankPhoto: path + `AIO-${Date.now()}.jpg`,
+      nik: req.body.nik,
+      idCardPhoto: path + req.files.idCardPhoto[0].filename,
+      officialPhoto: path + req.files.officialPhoto[0].filename,
+      bankPhoto: path + req.files.bankPhoto[0].filename,
     });
   
     res.status(201).json(response);

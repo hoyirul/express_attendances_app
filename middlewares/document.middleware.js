@@ -7,7 +7,8 @@ let storage = multer.diskStorage({
     cb(null, __basedir + "/public/documents/");
   },
   filename: (req, file, cb) => {
-    cb(null, `AIO-${Date.now()}.jpg`);
+    const uniqName = Date.now() + '-' + Math.round(Math.random() * 1E9)
+    cb(null, uniqName + '.jpg' );
   },
 });
 
