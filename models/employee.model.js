@@ -3,6 +3,7 @@ module.exports = (sequelize, DataTypes) => {
   const EmployeeStatus = sequelize.define('employeeStatus', { timestamps: false });
   const Institutions = sequelize.define('institutions', { timestamps: false });
   const Departements = sequelize.define('departements', { timestamps: false });
+  const Document = sequelize.define('documents', { timestamps: false });
   const Employees = sequelize.define('employees', {
     nik: {
       type: DataTypes.STRING(10),
@@ -109,6 +110,7 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'employees',
   });
 
+  Employees.hasMany(Document);
   Employees.belongsTo(Banks);
   Employees.belongsTo(EmployeeStatus);
   Employees.belongsTo(Institutions);

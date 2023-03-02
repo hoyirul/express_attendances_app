@@ -3,6 +3,7 @@ const { documents } = require("./../models");
 const { getPagingData, getPagination } = require('./../middlewares/pagination.middleware');
 const v = new Validator();
 const documentMiddleware = require("../middlewares/document.middleware");
+const fs = require("fs");
 
 exports.upload = async (req, res) => {
   try {
@@ -85,11 +86,13 @@ exports.update = async (req, res) => {
   try{
     const id = req.params.id;
   
-    let data = await documents.findByPk(id);
+    const Document = await documents.findOne({ where: { id } });
+    var path = "/public/documents/";
+    console.log(Document);
   
-    if (!data) {
-      return res.json({ message: "Data not found!" });
-    }
+    // if (!data) {
+    //   return res.json({ message: "Data not found!" });
+    // }
   
     const schema = {
       bankCode: "string|optional",
@@ -101,10 +104,27 @@ exports.update = async (req, res) => {
     if (validate.length) {
       return res.status(400).json(validate);
     }
+
+    if(req.files){
+      if(fs.existsSync(req.files.path)){
+        fs.unlink(req.files.path, (err) => {
+          if(err) throw err;
+        })
+      }
+    } else {
+      const response = await data.update({
+      nik: req.body.nik,
+      idCardPhoto: path + req.files.idCardPhoto[0].filename,
+      officialPhoto: path + req.files.officialPhoto[0].filename,
+      bankPhoto: path + req.files.bankPhoto[0].filename,
+      }, 
+      { where: { id: data } }
+      );
   
-    const response = await data.update(req.body);
+      res.status(200).json(response);
+    }
+
   
-    res.status(200).json(response);
   }catch(e){
     return res.status(500).json({ error: e.message });
   }
@@ -127,3 +147,14 @@ exports.destroy = async (req, res) => {
     return res.status(500).json({ error: e.message });
   }
 };
+
+exports.getById = async (req, res) => {
+  try{
+    const id = req.params.id;
+    const response  = await documents.findOne({ where: { id } });
+
+    res.status(200).json(response || {});
+  }catch(e){
+    return res.status(500).json({ error: e.message });
+  }
+}
