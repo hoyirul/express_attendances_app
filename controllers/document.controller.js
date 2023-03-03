@@ -86,13 +86,12 @@ exports.update = async (req, res) => {
   try{
     const id = req.params.id;
   
-    const Document = await documents.findOne({ where: { id } });
+    let data = await documents.findByPk(id);
     var path = "/public/documents/";
-    console.log(Document);
   
-    // if (!data) {
-    //   return res.json({ message: "Data not found!" });
-    // }
+    if (!data) {
+      return res.json({ message: "Data not found!" });
+    }
   
     const schema = {
       bankCode: "string|optional",
@@ -105,26 +104,30 @@ exports.update = async (req, res) => {
       return res.status(400).json(validate);
     }
 
+    await documentMiddleware(req, res);
+    console.log(req.files);
+
     if(req.files){
-      if(fs.existsSync(req.files.path)){
-        fs.unlink(req.files.path, (err) => {
-          if(err) throw err;
-        })
-      }
+      const idCardPhotoPath = data.idCardPhoto;
+      const officialPhotoPath = data.officialPhoto;
+      const bankPhotoPath = data.bankPhoto;
+      fs.unlinkSync(__dirname + "/.." + idCardPhotoPath);
+      fs.unlinkSync(__dirname + "/.." + officialPhotoPath);
+      fs.unlinkSync(__dirname + "/.." + bankPhotoPath);
+
     } else {
-      const response = await data.update({
+      return res.status(400).json({ message: "Upload a file please!" });
+    }
+    const response = await documents.update({
       nik: req.body.nik,
       idCardPhoto: path + req.files.idCardPhoto[0].filename,
       officialPhoto: path + req.files.officialPhoto[0].filename,
       bankPhoto: path + req.files.bankPhoto[0].filename,
       }, 
-      { where: { id: data } }
+      { where: { id: id } }
       );
-  
-      res.status(200).json(response);
-    }
 
-  
+    res.status(200).json(response);
   }catch(e){
     return res.status(500).json({ error: e.message });
   }
@@ -139,6 +142,13 @@ exports.destroy = async (req, res) => {
     if (!data) {
       return res.json({ message: "Data not found!" });
     }
+
+    const idCardPhotoPath = data.idCardPhoto;
+    const officialPhotoPath = data.officialPhoto;
+    const bankPhotoPath = data.bankPhoto;
+    fs.unlinkSync(__dirname + "/.." + idCardPhotoPath);
+    fs.unlinkSync(__dirname + "/.." + officialPhotoPath);
+    fs.unlinkSync(__dirname + "/.." + bankPhotoPath);
   
     await data.destroy(id);
   
@@ -148,13 +158,3 @@ exports.destroy = async (req, res) => {
   }
 };
 
-exports.getById = async (req, res) => {
-  try{
-    const id = req.params.id;
-    const response  = await documents.findOne({ where: { id } });
-
-    res.status(200).json(response || {});
-  }catch(e){
-    return res.status(500).json({ error: e.message });
-  }
-}

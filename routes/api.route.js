@@ -47,6 +47,5 @@ router.get("/documents", documentController.index);
 router.post("/documents", documentController.store);
 router.put("/documents/:id", documentController.update);
 router.delete("/documents/:id", documentController.destroy);
-router.get("/documents/:id", documentController.getById);
 
 module.exports = router;
