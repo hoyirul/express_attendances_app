@@ -53,6 +53,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    isActive: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
     email: {
       type: DataTypes.STRING,
       unique: true,

@@ -53,6 +53,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      isActive: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
       email: {
         type: Sequelize.STRING,
         unique: true,
