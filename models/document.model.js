@@ -42,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'documents',
   });
 
-  Documents.belongsTo(Employees);
+  Documents.belongsTo(Employees, { foreignKey: 'nik' });
 
   return Documents;
 }

@@ -3,6 +3,7 @@ const { documents } = require("./../models");
 const { getPagingData, getPagination } = require('./../middlewares/pagination.middleware');
 const v = new Validator();
 const documentMiddleware = require("../middlewares/document.middleware");
+const fs = require("fs");
 
 exports.upload = async (req, res) => {
   try {
@@ -86,6 +87,7 @@ exports.update = async (req, res) => {
     const id = req.params.id;
   
     let data = await documents.findByPk(id);
+    var path = "/public/documents/";
   
     if (!data) {
       return res.json({ message: "Data not found!" });
@@ -101,9 +103,30 @@ exports.update = async (req, res) => {
     if (validate.length) {
       return res.status(400).json(validate);
     }
-  
-    const response = await data.update(req.body);
-  
+
+    await documentMiddleware(req, res);
+    console.log(req.files);
+
+    if(req.files){
+      const idCardPhotoPath = data.idCardPhoto;
+      const officialPhotoPath = data.officialPhoto;
+      const bankPhotoPath = data.bankPhoto;
+      fs.unlinkSync(__dirname + "/.." + idCardPhotoPath);
+      fs.unlinkSync(__dirname + "/.." + officialPhotoPath);
+      fs.unlinkSync(__dirname + "/.." + bankPhotoPath);
+
+    } else {
+      return res.status(400).json({ message: "Upload a file please!" });
+    }
+    const response = await documents.update({
+      nik: req.body.nik,
+      idCardPhoto: path + req.files.idCardPhoto[0].filename,
+      officialPhoto: path + req.files.officialPhoto[0].filename,
+      bankPhoto: path + req.files.bankPhoto[0].filename,
+      }, 
+      { where: { id: id } }
+      );
+
     res.status(200).json(response);
   }catch(e){
     return res.status(500).json({ error: e.message });
@@ -119,6 +142,13 @@ exports.destroy = async (req, res) => {
     if (!data) {
       return res.json({ message: "Data not found!" });
     }
+
+    const idCardPhotoPath = data.idCardPhoto;
+    const officialPhotoPath = data.officialPhoto;
+    const bankPhotoPath = data.bankPhoto;
+    fs.unlinkSync(__dirname + "/.." + idCardPhotoPath);
+    fs.unlinkSync(__dirname + "/.." + officialPhotoPath);
+    fs.unlinkSync(__dirname + "/.." + bankPhotoPath);
   
     await data.destroy(id);
   
@@ -127,3 +157,4 @@ exports.destroy = async (req, res) => {
     return res.status(500).json({ error: e.message });
   }
 };
+
