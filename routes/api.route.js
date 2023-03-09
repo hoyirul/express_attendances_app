@@ -1,18 +1,21 @@
 var express = require('express');
 var router = express.Router();
-const upload = require("../middlewares/document.middleware");
+const upload = require('../middlewares/document.middleware');
 var bankController = require('./../controllers/bank.controller');
 var employeestatusController = require('./../controllers/employeestatus.controller');
 var institutionController = require('./../controllers/institution.controller');
 var departementController = require('./../controllers/departement.controller');
 var documentController = require('./../controllers/document.controller');
 var employeeController = require('./../controllers/employee.controller');
+const userController = require('../Controllers/auth.controller');
+const { signup, login, testi } = userController;
 
-
+router.post('/login', login);
+// router.get('/testi', testi);
+router.post('/testi', testi);
 
 /* GET Employee */
 router.get('/profile', employeeController.index);
-
 
 /* GET Banks */
 router.get('/banks', bankController.index);
@@ -43,9 +46,9 @@ router.put('/departements/:id', departementController.update);
 router.delete('/departements/:id', departementController.destroy);
 
 // Test upload image
-router.get("/documents", documentController.index);
-router.post("/documents", documentController.store);
-router.put("/documents/:id", documentController.update);
-router.delete("/documents/:id", documentController.destroy);
+router.get('/documents', documentController.index);
+router.post('/documents', documentController.store);
+router.put('/documents/:id', documentController.update);
+router.delete('/documents/:id', documentController.destroy);
 
 module.exports = router;
