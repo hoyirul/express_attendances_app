@@ -16,6 +16,7 @@ router.post('/testi', testi);
 
 /* GET Employee */
 router.get('/profile', employeeController.index);
+router.get('/employee/:id', employeeController.getById);
 
 /* GET Banks */
 router.get('/banks', bankController.index);
