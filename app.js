@@ -3,6 +3,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const bodyParser = require('body-parser');
+var multer = require('multer');
+var upload = multer();
 
 global.__basedir = __dirname;
 
@@ -21,9 +23,10 @@ app.use((req, res, next) => {
 
 app.use(logger('dev'));
 // app.use(bodyParser.urlencoded({ extended: true }));
-// app.use(bodyParser.json());
+app.use(bodyParser.json());
 // app.use(bodyParser.raw());
-app.use(express.urlencoded({ extended: true }));
+// app.use(express.urlencoded({ extended: true }));
+app.use(upload.array());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 

@@ -81,9 +81,9 @@ const login = async (req, res) => {
 				console.log('user', JSON.stringify(user, null, 2));
 				console.log(token);
 				//send user data
-				return res.status(201).send({ access_token: token });
+				return res.status(201).send({ access_token: token, user: user });
 			} else {
-				return res.status(401).send('Authentication failed');
+				return res.status(401).send({ message: 'Authentication-failed' });
 			}
 		} else {
 			return res.status(401).send('Authentication failed');
